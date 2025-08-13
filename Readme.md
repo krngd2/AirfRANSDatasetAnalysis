@@ -48,3 +48,4 @@ cfd_lpips_model = CustomFeatureMetric(custom_vgg_path='path/to/your_model.pth')
 # Calculate the distance score between two images (img1, img2)
 distance_score = cfd_lpips_model(img1, img2)
 ```
+

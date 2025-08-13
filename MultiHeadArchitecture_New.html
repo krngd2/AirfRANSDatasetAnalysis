@@ -1,0 +1,374 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Head Neural Network Architecture</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 20px;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 30px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 30px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .network {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .layer-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .layer-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .output-heads {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 20px;
+        }
+
+        .neuron {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        .input-neuron {
+            background: #f0f8ff;
+            border-color: #4169e1;
+        }
+
+        .vgg-neuron {
+            background: #f0f0f0;
+            border-color: #333;
+        }
+
+        .flatten-neuron {
+            background: #fff8dc;
+            border-color: #daa520;
+        }
+
+        .output-neuron {
+            background: #f0fff0;
+            border-color: #228b22;
+        }
+
+        .field-neuron {
+            background: #ffe4e1;
+            border-color: #dc143c;
+        }
+
+        .process-neuron {
+            background: #e6f3ff;
+            border-color: #1e90ff;
+        }
+
+        .intensity-neuron {
+            background: #f0fff0;
+            border-color: #32cd32;
+        }
+
+        .layer-label {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .layer-info {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            max-width: 120px;
+        }
+
+        .connection-lines {
+            position: absolute;
+            z-index: -1;
+        }
+
+        .connection {
+            stroke: #666;
+            stroke-width: 1;
+            opacity: 0.3;
+        }
+
+        .arrow-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .arrow {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            transform: rotate(90deg);
+        }
+
+        .arrow-label {
+            font-size: 10px;
+            color: #666;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        .highlight {
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .specs {
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-neuron {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 11px;
+            color: #000;
+        }
+
+        .network-container {
+            position: relative;
+            overflow: visible;
+        }
+
+        .dots {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: #666;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        
+        <div class="highlight">
+            <div class="specs">
+                <strong>Architecture Overview:</strong><br>
+                VGG16 Feature Extractor (25,088 neurons) → Multi-Head Classification<br>
+                <strong>Field Head:</strong> 4 outputs (p, nut, ux, uy) | <strong>Process Head:</strong> 2 outputs (clipped, remeshed) | <strong>Intensity Head:</strong> 3 outputs (low, medium, high)
+            </div>
+        </div>
+        
+        
+        
+        <div class="main-content">
+            <div class="network-container">
+                <div class="network">
+                    <!-- Input Layer -->
+                    <div class="layer-column" style="
+    flex-direction: row;
+">
+                        <div class="layer-label">Input Layer<br>224×224×3</div>
+                        <div class="layer-row" style="
+    /* width: 40vw; */
+">
+                            <div class="neuron input-neuron">R</div>
+                            <div class="neuron input-neuron">G</div>
+                            <div class="neuron input-neuron">B</div>
+                            <div class="dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="layer-info">Image Pixels (150,528 total)</div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="arrow-container">
+                        <div class="arrow">→</div>
+                        <div class="arrow-label">VGG16 Convolution</div><div class="arrow">→</div>
+                    </div>
+
+                    <!-- VGG16 Features -->
+                    <div class="layer-column" style="
+    flex-direction: row;
+">
+                        <div class="layer-label">VGG16 Features</div>
+                        <div class="layer-row">
+                            <div class="neuron vgg-neuron">f1</div>
+                            <div class="neuron vgg-neuron">f2</div>
+                            <div class="neuron vgg-neuron">f3</div>
+                            <div class="neuron vgg-neuron">f4</div>
+                            <div class="neuron vgg-neuron">f5</div>
+                            <div class="dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="layer-info">7×7×512 features (25,088 total)</div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="arrow-container">
+                        <div class="arrow">→</div>
+                        <div class="arrow-label">Flatten</div><div class="arrow">→</div>
+                    </div>
+
+                    <!-- Flatten Layer -->
+                    <div class="layer-column" style="
+    flex-direction: row;
+">
+                        <div class="layer-label">Flatten Layer</div>
+                        <div class="layer-row">
+                            <div class="neuron flatten-neuron">h1</div>
+                            <div class="neuron flatten-neuron">h2</div>
+                            <div class="neuron flatten-neuron">h3</div>
+                            <div class="neuron flatten-neuron">h4</div>
+                            <div class="neuron flatten-neuron">h5</div>
+                            <div class="dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="layer-info">Vector (25,088 neurons)</div>
+                    </div>
+
+                    <!-- Arrow Split -->
+                    <div class="arrow-container">
+                        <div class="arrow">→</div>
+                        <div class="arrow-label">Split to 3 heads</div><div class="arrow">→</div>
+                    </div>
+
+                    <!-- Three Output Heads -->
+                    <div class="output-heads">
+                        <!-- Field Head -->
+                        <div class="layer-column">
+                            <div class="layer-label" style="
+    width: 200px;
+">Field Classification</div>
+                            <div class="neuron field-neuron">p</div>
+                            <div class="neuron field-neuron">nut</div>
+                            <div class="neuron field-neuron">ux</div>
+                            <div class="neuron field-neuron">uy</div>
+                            <div class="layer-info">4 Classes<br>Softmax</div>
+                        </div>
+
+                        <!-- Process Head -->
+                        <div class="layer-column">
+                            <div class="layer-label">Process Classification</div>
+                            <div class="neuron process-neuron">clip</div>
+                            <div class="neuron process-neuron">mesh</div>
+                            <div class="layer-info">2 Classes<br>Softmax</div>
+                        </div>
+
+                        <!-- Intensity Head -->
+                        <div class="layer-column" style="
+    width: min-content;
+">
+                            <div class="layer-label">Intensity Classification</div>
+                            <div class="neuron intensity-neuron">low</div>
+                            <div class="neuron intensity-neuron">med</div>
+                            <div class="neuron intensity-neuron">high</div>
+                            <div class="layer-info">3 Classes<br>Softmax</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <div class="specs">
+                <strong>Training Configuration:</strong><br>
+                Loss: Categorical Crossentropy for all heads | Weights: Field (1.0), Process (2.0), Intensity (1.0)<br>
+                Optimizer: Adam (LR: 0.0001) | Frozen VGG16 backbone with trainable classification heads
+            </div>
+        </div>
+    </div>
+
+
+</body></html>

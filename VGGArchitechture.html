@@ -27,7 +27,7 @@
             font-size: 20px;
             font-weight: bold;
             color: #000;
-            margin-bottom: 30px;
+            margin-bottom: 23px;
         }
 
         .main-content {
@@ -48,7 +48,7 @@
             flex-direction: column;
             /* gap: 15px; */
             align-items: center;
-            margin-bottom: 30px;
+            /* margin-bottom: 30px; */
         }
 
         .block {
@@ -61,7 +61,9 @@
 
         .block .layers-container {
             display: flex;
+            padding: 5px 15px 0px 15px;
             flex-direction: row;
+            border: 1px solid gray;
             gap: 5px;
             align-items: center;
             justify-content: center;
@@ -74,11 +76,11 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            width: 100%;
+            width: 552px;
         }
 
         .block-label-left {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             color: #000;
             text-align: right;
@@ -87,7 +89,7 @@
         }
 
         .block-label-right {
-            font-size: 11px;
+            font-size: 16px;
             font-weight: normal;
             color: #000;
             text-align: left;
@@ -104,7 +106,7 @@
             text-align: center;
             color: #000;
             font-weight: normal;
-            font-size: 10px;
+            font-size: 14px;
             margin-bottom: 5px;
             position: relative;
         }
@@ -141,7 +143,7 @@
         }
 
         .layer-info {
-            font-size: 9px;
+            font-size: 14px;
             line-height: 1.2;
             white-space: nowrap;
             color: #000;
@@ -149,6 +151,7 @@
 
         .arrow {
             font-size: 20px;
+            line-height: 0.5;
             color: #333;
             margin: 10px 0;
             display: flex;
@@ -159,12 +162,12 @@
         .legend {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
+            gap: 5px;
+            padding: 10px;
             background: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
 
         .legend-item {
@@ -180,15 +183,15 @@
         }
 
         .legend-text {
-            font-size: 11px;
+            font-size: 12px;
             color: #000;
             font-weight: normal;
         }
 
         .specs {
             text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
+            margin-top: -4px;
+            font-size: 17px;
             color: #333;
             line-height: 1.5;
         }
@@ -203,17 +206,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="title">VGG16 Convolutional Neural Network Architecture</div>
+        <!-- <div class="title">VGG16 Convolutional Neural Network Architecture</div> -->
         
         <div class="highlight">
             <div class="specs">
                 <strong>VGG16 Specifications:</strong><br>
-                Total Parameters: ~138 million | Convolutional Layers: 13 | Fully Connected Layers: 3 | Max Pooling Layers: 5<br>
-                Input Size: 224×224×3 | Output Classes: 1000 | Filter Size: 3×3 (all conv layers) | Pooling: 2×2 with stride 2
+                Total Parameters: ~138 million | Convolutional Layers: 13 <br>Fully Connected Layers: 3 | Max Pooling Layers: 5<br>
+                Input Size: 224×224×3 | Output Classes: 1000 <br> Filter Size: 3×3 (all conv layers) | Pooling: 2×2 with stride 2
             </div>
         </div>
         
-        <div class="legend">
+        <!-- <div class="legend">
             <div class="legend-item">
                 <div class="legend-color" style="background: #f5f5f5; border: 2px solid #333;"></div>
                 <span class="legend-text">Input Layer (224×224×3)</span>
@@ -234,7 +237,7 @@
                 <div class="legend-color" style="background: #b0b0b0;"></div>
                 <span class="legend-text">Output Layer (1000 classes)</span>
             </div>
-        </div>
+        </div> -->
         
         <div class="main-content">
             <div class="architecture-section">

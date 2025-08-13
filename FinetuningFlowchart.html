@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGG16 Finetuning Process Flowchart</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 20px;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 30px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 30px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flowchart-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.3s ease;
+            margin: 10px 0;
+        }
+
+        .step-content {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .step-description {
+            font-size: 11px;
+            font-weight: normal;
+            color: #000;
+            text-align: left;
+            min-width: 200px;
+            flex-shrink: 0;
+        }
+
+        .process-box {
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000;
+            font-weight: normal;
+            font-size: 10px;
+            margin-bottom: 5px;
+            position: relative;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .data-input {
+            background: #f5f5f5;
+            border: 2px solid #333;
+            width: 180px;
+            height: 60px;
+        }
+
+        .preprocessing {
+            background: #e8f4f8;
+            width: 200px;
+            height: 70px;
+        }
+
+        .model-setup {
+            background: #fff2cc;
+            width: 220px;
+            height: 80px;
+        }
+
+        .training {
+            background: #e1d5e7;
+            width: 200px;
+            height: 70px;
+        }
+
+        .output {
+            background: #d5e8d4;
+            width: 180px;
+            height: 60px;
+        }
+
+        .parallel-box {
+            background: #f8cecc;
+            width: 160px;
+            height: 50px;
+            margin: 0 5px;
+        }
+
+        .process-info {
+            font-size: 9px;
+            line-height: 1.2;
+            white-space: nowrap;
+            color: #000;
+        }
+
+        .arrow {
+            font-size: 20px;
+            color: #333;
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .parallel-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #333;
+        }
+
+        .legend-text {
+            font-size: 11px;
+            color: #000;
+            font-weight: normal;
+        }
+
+        .specs {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            background: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        .split-arrow {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .split-line {
+            width: 40px;
+            height: 1px;
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">VGG16 Finetuning Process for AirfRANS Dataset Analysis</div>
+        
+        <div class="highlight">
+            <div class="specs">
+                <strong>Finetuning Specifications:</strong><br>
+                Pre-trained Model: VGG16 (ImageNet weights) | Input Size: 224×224×3 | Multi-task Learning: 3 Classification Heads<br>
+                Tasks: Field Type (4 classes), Process Type (2 classes), Intensity Level (3 classes) | Training Epochs: 50 | Batch Size: 8
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f5f5f5; border: 2px solid #333;"></div>
+                <span class="legend-text">Data Input/Loading</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e8f4f8;"></div>
+                <span class="legend-text">Data Preprocessing</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff2cc;"></div>
+                <span class="legend-text">Model Setup</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e1d5e7;"></div>
+                <span class="legend-text">Training Process</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #d5e8d4;"></div>
+                <span class="legend-text">Output/Results</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f8cecc;"></div>
+                <span class="legend-text">Parallel Processing</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="flowchart-section">
+                <div class="flowchart">
+                    
+                    <!-- Step 1: Load Coefficient Data -->
+                    <div class="step">
+                        <div class="process-box data-input">
+                            <div class="process-info">LOAD COEFFICIENT DATA<br>coefficient_comparison_results.csv</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 2: Create Binning Strategy -->
+                    <div class="step">
+                        <div class="process-box preprocessing">
+                            <div class="process-info">CREATE BINNING STRATEGY<br>Divide coefficients into 3 bins<br>(Low, Medium, High)</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 3: Load Images -->
+                    <div class="step">
+                        <div class="process-box data-input">
+                            <div class="process-info">LOAD IMAGES<br>Clipped & Remeshed<br>4 field types: p, nut, ux, uy</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 4: Parallel Image Processing -->
+                    <div class="parallel-container">
+                        <div class="process-box parallel-box">
+                            <div class="process-info">RESIZE<br>224×224×3</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">PREPROCESS<br>VGG16 Format</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">NORMALIZE<br>ImageNet Stats</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 5: Create Labels -->
+                    <div class="step">
+                        <div class="process-box preprocessing">
+                            <div class="process-info">CREATE MULTI-TASK LABELS<br>Field (4 classes) | Process (2 classes)<br>Intensity (3 classes)</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 6: Data Split -->
+                    <div class="step">
+                        <div class="process-box preprocessing">
+                            <div class="process-info">STRATIFIED DATA SPLIT<br>Train: 64% | Val: 16% | Test: 20%</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 7: Load Pre-trained VGG16 -->
+                    <div class="step">
+                        <div class="process-box model-setup">
+                            <div class="process-info">LOAD PRE-TRAINED VGG16<br>ImageNet weights<br>Remove top classification layer</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 8: Freeze Base Layers -->
+                    <div class="step">
+                        <div class="process-box model-setup">
+                            <div class="process-info">FREEZE BASE LAYERS<br>Keep pre-trained features<br>Only train new heads</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 9: Add Custom Heads -->
+                    <div class="parallel-container">
+                        <div class="process-box parallel-box">
+                            <div class="process-info">FIELD HEAD<br>Dense(4)<br>Softmax</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">PROCESS HEAD<br>Dense(2)<br>Softmax</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">INTENSITY HEAD<br>Dense(3)<br>Softmax</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 10: Compile Model -->
+                    <div class="step">
+                        <div class="process-box model-setup">
+                            <div class="process-info">COMPILE MODEL<br>Adam Optimizer (lr=0.0001)<br>Categorical Crossentropy Loss</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 11: Training -->
+                    <div class="step">
+                        <div class="process-box training">
+                            <div class="process-info">TRAINING PROCESS<br>10 epochs + 40 epochs<br>Batch size: 8</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 12: Model Evaluation -->
+                    <div class="parallel-container">
+                        <div class="process-box parallel-box">
+                            <div class="process-info">FIELD<br>ACCURACY</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">PROCESS<br>ACCURACY</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">INTENSITY<br>ACCURACY</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 13: Save Model -->
+                    <div class="step">
+                        <div class="process-box output">
+                            <div class="process-info">SAVE FINE-TUNED MODEL<br>vgg16_finetuned_3_encoders.h5</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <!-- Step 14: Generate Results -->
+                    <div class="parallel-container">
+                        <div class="process-box parallel-box">
+                            <div class="process-info">TRAINING<br>PLOTS</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">TEST SET<br>CSV</div>
+                        </div>
+                        <div class="process-box parallel-box">
+                            <div class="process-info">PERFORMANCE<br>METRICS</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <div class="specs">
+                <strong>Key Features:</strong><br>
+                • Multi-task learning with shared feature extraction and task-specific classification heads<br>
+                • Transfer learning from ImageNet pre-trained VGG16 with frozen convolutional layers<br>
+                • Stratified data splitting to maintain class balance across train/validation/test sets<br>
+                • Custom binning strategy based on aerodynamic coefficient differences between clipped and remeshed data
+            </div>
+        </div>
+    </div>
+</body>
+</html>
